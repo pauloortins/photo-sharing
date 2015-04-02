@@ -33,12 +33,12 @@
             <div class="panel-body">
               <div class="row centered">
                 <div class="col-md-12 center">
-                  <button type="button" data-bind="click: addNewPhoto" class="btn btn-default">
+                  <button type="button" data-bind="click: gallery.addNewPhoto" class="btn btn-default">
                     <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>
                     Add new photo
                   </button>
                 </div>
-                <div class="col-md-12 photo-gallery" data-bind="foreach: photos">                
+                <div class="col-md-12 photo-gallery" data-bind="foreach: gallery.photos">                
                   <div class="row">
                     <div class="col-md-12">
                       <a href="#" class="thumbnail">
@@ -88,7 +88,7 @@
           <div class="panel panel-default">
             <div class="panel-heading">Comments</div>
             <div class="panel-body">
-              <div class="row"  data-bind="foreach: form.comments">
+              <div class="row"  data-bind="foreach: commentsPanel.comments">
                 <div class="col-md-12 comment">
                   <span data-bind="text: message"></span>
                   <hr>

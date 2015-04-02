@@ -1,20 +1,26 @@
 var ImageUploadPage = function() {
     
     var page = this;
-    page.photos = ko.observableArray([]);
-    window.Media.getSocialSharePhotos(function(data) {                
-        page.photos(data.data.map(function(fbImage) {            
-            var image = new Image(fbImage.id, fbImage.images[0].source);
-            return image;
-        }));        
-    }); 
 
-    page.addNewPhoto = function() 
-    {
-        page.form.selectImage(new Image());
-    };
+    // Gallery Section
+    page.gallery = new function() {
+        var self = this;
+
+        self.photos = ko.observableArray([]);
+        window.Media.getSocialSharePhotos(function(data) {                
+            self.photos(data.data.map(function(fbImage) {            
+                var image = new Image(fbImage.id, fbImage.images[0].source);
+                return image;
+            }));        
+        }); 
+
+        self.addNewPhoto = function() 
+        {
+            page.form.selectImage(new Image());
+        };
+    }; 
     
-    // Image Upload
+    // Form Section
     page.form = new function() {
 
         var self = this;
@@ -57,7 +63,7 @@ var ImageUploadPage = function() {
                 self.commentText(),
                 function(response)             
                 {
-                    self.comments.push({message: self.commentText()});
+                    self.commentsPanel.addComment(self.commentText());
                     self.commentText('');
                     self.isBusy(false);
                 }
@@ -71,19 +77,35 @@ var ImageUploadPage = function() {
         }; 
 
         self.imageId.subscribe(function(id) {
-            if (id == undefined) 
+            page.commentsPanel.loadComments(id);
+        });
+
+        self.selectImage(new Image());
+    };
+
+    // Comments Section
+    page.commentsPanel = new function() {
+        var self = this;
+
+        self.comments = ko.observableArray();
+
+        self.loadComments = function (imageId) {
+            if (imageId == undefined) 
             {
                 self.comments([]);
             }
             else
             {
-                window.Media.getPhotoComments(id, function(data) {
+                window.Media.getPhotoComments(imageId, function(data) {
                     self.comments(data.data);
                 });
             }
-        });
+        };
 
-        self.selectImage(new Image());
+        self.addComment = function (comment) 
+        {
+            self.comments.push({message: comment});
+        };
     };
 };
 
