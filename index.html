@@ -1,0 +1,134 @@
+  <html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>
+      Social Share
+    </title>
+
+    <link rel="stylesheet" href="css/site.css"></link>
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css"></link>
+
+  </head>
+  <body data-bind="visible: true" style="display: none">
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">Social Share</a>
+        </div>
+      </div>
+    </nav>
+    <div class="container main">
+      <div class="row">
+        <div class="col-md-2 album">
+          <div class="panel panel-default">
+            <div class="panel-heading">Album</div>
+            <div class="panel-body">
+              <div class="row centered">
+                <div class="col-md-12 center">
+                  <button type="button" data-bind="click: addNewPhoto" class="btn btn-default">
+                    <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>
+                    Add new photo
+                  </button>
+                </div>
+                <div class="col-md-12 photo-gallery" data-bind="foreach: photos">                
+                  <div class="row">
+                    <div class="col-md-12">
+                      <a href="#" class="thumbnail">
+                        <img data-bind="attr: { src: imageUrl}, click: $parent.form.selectImage"></img>     
+                      </a>
+                    </div>      
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-5 centered photo">
+          <div class="panel panel-default album">
+            <div class="panel-heading">Photo</div>
+            <div class="panel-body">
+              <form>
+                <div class="form-group" data-bind="if: form.isBusy">
+                  <img src="img/loading.gif"></img>
+                </div>
+                <div class="form-group" data-bind="ifnot: form.imageId">
+                  <input id="image_upload" type="file" data-bind="event: { change: function() { form.fileChange($element.files[0]) } }" />
+                </div>
+                <div class="form-group">
+                  <img id="preview" data-bind="attr: { src: form.imageUrl}"></img>
+                </div>
+                <div class="form-group" data-bind="ifnot: form.imageId">
+                  <button id="send_button" type="button" class="btn btn-default" data-bind="click: form.sendClick, disable: form.isBusy">
+                    <span class="glyphicon glyphicon-picture" aria-hidden="true"></span>
+                    Send Photo
+                  </button>
+                </div>
+                <div class="form-group" data-bind="if: form.imageId">
+                  <textarea data-bind="value: form.commentText, disable: form.isBusy"></textarea>
+                </div>
+                <div class="form-group" data-bind="if: form.imageId">
+                  <button type="button" class="btn btn-default" data-bind="click: form.sendComment, disable: form.isBusy">
+                    <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+                    Send Comment
+                  </button>                                 
+                </div>                                 
+              </form>
+            </div>    
+          </div>                     
+        </div>                           
+        <div class="col-md-5 comments">
+          <div class="panel panel-default">
+            <div class="panel-heading">Comments</div>
+            <div class="panel-body">
+              <div class="row"  data-bind="foreach: form.comments">
+                <div class="col-md-12 comment">
+                  <span data-bind="text: message"></span>
+                  <hr>
+                </div>
+              </div>
+            </div>                                  
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="bower_components/jquery/dist/jquery.js"></script>
+    <script src="bower_components/knockout/dist/knockout.js"></script>
+    <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="js/ImageUploadPage.js"></script>
+    <script src="js/Media.js"></script>
+
+    <script>
+      window.fbAsyncInit = function() {
+        FB.init({
+          appId      : '1640980529468314',
+          xfbml      : true,
+          version    : 'v2.3'
+        });
+
+        FB.login(function(){
+          ko.applyBindings(new ImageUploadPage()); 
+        }, {scope: 'publish_actions,user_photos'}); 
+      };
+
+
+      (function(d, s, id){
+       var js, fjs = d.getElementsByTagName(s)[0];
+       if (d.getElementById(id)) {return;}
+       js = d.createElement(s); js.id = id;
+       js.src = "//connect.facebook.net/en_US/sdk.js";
+       fjs.parentNode.insertBefore(js, fjs);
+     }(document, 'script', 'facebook-jssdk'));
+
+
+    </script> 
+  </body>
+  </html>
