@@ -22,10 +22,9 @@
         }
       }
     }); 
-  }
+  };
 
-  Media.prototype.sendPhotoToFacebook = function(url, successFn) 
-  {
+  Media.prototype.sendPhotoToFacebook = function(url, successFn) {
       this.getSocialShareAlbum(function(id) {
           FB.api('/' + id + '/photos', 'post', 
           {
@@ -35,8 +34,7 @@
       });       
   };
 
-  Media.prototype.getSocialShareAlbum = function(successFn) 
-  {
+  Media.prototype.getSocialShareAlbum = function(successFn) {
       FB.api('/me/albums', 'get', {}, function(data) 
       {
         var socialShareAlbum = data.data.filter(function(x) {return x.name == "SocialShare";}); 
@@ -54,8 +52,7 @@
       });
   };
 
-  Media.prototype.sendCommentToFacebook = function(imageId, comment, successFn)
-  {
+  Media.prototype.sendCommentToFacebook = function(imageId, comment, successFn) {
       FB.api('/' + imageId + '/comments', 'post', 
       {
          message: comment
@@ -69,8 +66,7 @@
       successFn);  
   };
 
-  Media.prototype.getSocialSharePhotos = function (successFn) 
-  {
+  Media.prototype.getSocialSharePhotos = function (successFn) {
       this.getSocialShareAlbum(function(id) {
           FB.api('/' + id + '/photos', 'get', 
           {}, 

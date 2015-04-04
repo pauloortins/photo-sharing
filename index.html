@@ -114,8 +114,15 @@
           version    : 'v2.3'
         });
 
-        FB.login(function(){
-          ko.applyBindings(new ImageUploadPage()); 
+        FB.login(function(response){
+          if (response.status == "connected")
+          {
+            ko.applyBindings(new ImageUploadPage()); 
+          }
+          else
+          {
+            alert("You are not connected in the Facebook!");
+          }
         }, {scope: 'publish_actions,user_photos'}); 
       };
 

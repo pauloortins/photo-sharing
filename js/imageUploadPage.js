@@ -45,12 +45,13 @@ var ImageUploadPage = function() {
 
         self.sendClick = function() {
             self.isBusy(true);
+            var imageUrl = self.imageUrl();
             window.Media.sendPhotoToFacebook(
-                self.imageUrl(), 
+                imageUrl, 
                 function(response) 
                 {
                     self.imageId(response.id);
-                    page.photos.push(new Image(self.imageId(), self.imageUrl()));
+                    page.gallery.photos.push(new Image(self.imageId(), imageUrl));
                     self.isBusy(false);
                 }
             );
@@ -63,7 +64,7 @@ var ImageUploadPage = function() {
                 self.commentText(),
                 function(response)             
                 {
-                    self.commentsPanel.addComment(self.commentText());
+                    page.commentsPanel.addComment(self.commentText());
                     self.commentText('');
                     self.isBusy(false);
                 }
